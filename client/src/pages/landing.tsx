@@ -325,13 +325,13 @@ export default function Landing() {
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <motion.a
-              href="tel:+212669056627"
+              href="https://wa.me/212669056627"
               className="flex flex-col items-center gap-4 p-6 rounded-lg bg-card hover:bg-card/80 transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <Phone className="w-8 h-8 text-primary" />
-              <p className="text-lg">+212 669-056627</p>
+              <p className="text-lg">WhatsApp: +212 669-056627</p>
             </motion.a>
             <motion.a
               href="mailto:contact@trendshop.com"

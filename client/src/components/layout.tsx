@@ -16,6 +16,13 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const menuItems = [
   {
+    category: "Main",
+    items: [
+      { icon: ShoppingCart, label: "Dashboard", href: "/dashboard" },
+      { icon: ShoppingCart, label: "Store", href: "/store" },
+    ]
+  },
+  {
     category: "Social Media",
     items: [
       { icon: SiInstagram, label: "Instagram", href: "/instagram" },

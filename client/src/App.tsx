@@ -6,12 +6,14 @@ import { Toaster } from "@/components/ui/toaster";
 import { useEffect } from "react";
 import Landing from "@/pages/landing";
 import Store from "@/pages/store";
+import Dashboard from "@/pages/dashboard";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Landing} />
+      <Route path="/dashboard" component={Dashboard} />
       <Route path="/store" component={Store} />
       <Route path="/instagram" component={Store} />
       <Route path="/tiktok" component={Store} />
