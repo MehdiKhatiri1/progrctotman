@@ -28,8 +28,8 @@ const menuItems = [
     category: "Main",
     items: [
       { icon: ShoppingCart, label: "Store", href: "/store" },
-      { icon: CheckCircle, label: "Features", href: "/features" },
       { icon: MessageSquare, label: "Services", href: "/services" },
+      { icon: CheckCircle, label: "Features", href: "/features" },
       { icon: Phone, label: "Contact", href: "/contact" }
     ]
   },

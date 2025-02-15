@@ -14,7 +14,7 @@ import { motion } from "framer-motion";
 
 const platforms = {
   social: ["instagram", "tiktok", "facebook", "youtube"],
-  streaming: ["spotify", "netflix", "hbo"]
+  streaming: ["spotify", "netflix", "hbo", "canva"]
 };
 
 const platformIcons = {
