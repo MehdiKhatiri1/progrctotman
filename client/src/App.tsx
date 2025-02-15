@@ -1,8 +1,8 @@
-
 import { Switch, Route } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CartProvider } from "./lib/cart-context";
 import { LanguageProvider } from "./lib/language-context";
+import { AuthProvider } from "./hooks/use-auth";
 import { Toaster } from "@/components/ui/toaster";
 
 import Landing from "@/pages/landing";
@@ -10,6 +10,7 @@ import Store from "@/pages/store";
 import Features from "@/pages/features";
 import Services from "@/pages/services";
 import Contact from "@/pages/contact";
+import Auth from "@/pages/auth";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient({
@@ -29,6 +30,7 @@ function Router() {
       <Route path="/features" component={Features} />
       <Route path="/services" component={Services} />
       <Route path="/contact" component={Contact} />
+      <Route path="/auth" component={Auth} />
       <Route path="/instagram" component={Store} />
       <Route path="/tiktok" component={Store} />
       <Route path="/facebook" component={Store} />
@@ -45,10 +47,12 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
-        <CartProvider>
-          <Router />
-          <Toaster />
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <Router />
+            <Toaster />
+          </CartProvider>
+        </AuthProvider>
       </LanguageProvider>
     </QueryClientProvider>
   );
