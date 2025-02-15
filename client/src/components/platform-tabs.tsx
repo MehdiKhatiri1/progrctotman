@@ -11,7 +11,7 @@ import {
   SiHbo
 } from "react-icons/si";
 import { motion } from "framer-motion";
-import { Link, useLocation, useSearchParams as useWouterSearchParams } from "wouter";
+import { Link, useLocation } from "wouter";
 
 const useSearchParams = () => {
   const [location] = useLocation();
