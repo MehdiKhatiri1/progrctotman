@@ -4,6 +4,9 @@ import type { Service } from "@shared/schema";
 import { Layout } from "@/components/layout";
 import { motion } from "framer-motion";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { PhoneIcon } from "lucide-react";
 
 function LoadingSkeleton() {
   return (
@@ -32,13 +35,13 @@ export default function Home() {
 
   return (
     <Layout>
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="space-y-12"
       >
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -52,11 +55,32 @@ export default function Home() {
           </p>
         </motion.div>
 
-        {isLoading ? (
-          <LoadingSkeleton />
-        ) : (
-          services && <PlatformTabs services={services} />
-        )}
+        <div className="container flex flex-col items-center justify-center min-h-screen py-12 space-y-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center space-y-4"
+          >
+            <h1 className="text-4xl font-bold">Welcome Home</h1>
+            <p className="text-xl text-muted-foreground">
+              Your one-stop shop for digital services
+            </p>
+          </motion.div>
+
+          <div className="flex gap-4">
+            <Button asChild>
+              <Link href="/services">
+                Browse Services
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/contact">
+                <PhoneIcon className="w-4 h-4 mr-2" />
+                Contact Us
+              </Link>
+            </Button>
+          </div>
+        </div>
       </motion.div>
     </Layout>
   );
