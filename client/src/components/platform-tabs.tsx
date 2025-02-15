@@ -1,6 +1,7 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ServicesGrid } from "./services-grid";
-import { Service } from "@shared/schema";
+import type { Service } from "@shared/schema";
+import { type TabsProps } from "@/components/ui/tabs";
 import { 
   SiInstagram, 
   SiTiktok, 
