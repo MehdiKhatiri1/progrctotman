@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "wouter";
 import { CartDrawer } from "./cart-drawer";
-import { Phone, Menu, ShoppingCart } from "lucide-react";
+import { Phone, Menu, ShoppingCart, Globe } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
   SiInstagram,
@@ -13,6 +13,14 @@ import {
   SiHbo,
 } from "react-icons/si";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/lib/language-context";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 const menuItems = [
   {
@@ -66,6 +74,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const { language, setLanguage, translations } = useLanguage();
 
   useEffect(() => {
     setMounted(true);
@@ -95,7 +104,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
           variants={sidebarVariants}
           className={cn(
             "fixed inset-y-0 left-0 z-40 w-64 border-r bg-card/80 backdrop-blur supports-[backdrop-filter]:bg-background/60",
-            "lg:relative lg:translate-x-0"
+            "lg:relative lg:translate-x-0",
+            language === "ar" ? "right-0 left-auto" : "left-0"
           )}
         >
           <div className="p-6">
@@ -121,7 +131,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             {menuItems.map((category) => (
               <div key={category.category}>
                 <h3 className="px-4 text-sm font-semibold text-muted-foreground mb-2">
-                  {category.category}
+                  {translations[category.category.toLowerCase()]}
                 </h3>
                 {category.items.map((item) => {
                   const Icon = item.icon;
@@ -138,7 +148,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                         )}
                       >
                         <Icon className="w-5 h-5" />
-                        <span>{item.label}</span>
+                        <span>{translations[item.label.toLowerCase()]}</span>
                       </div>
                     </Link>
                   );
@@ -153,11 +163,29 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <header className="border-b sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="container mx-auto px-4 py-4 flex justify-between items-center">
             <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
-              Welcome to Trend Shop
+              {translations.dashboard}
             </h1>
             <div className="flex items-center gap-4">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Globe className="h-5 w-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => setLanguage("en")}>
+                    🇺🇸 English
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setLanguage("fr")}>
+                    🇫🇷 Français
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setLanguage("ar")}>
+                    🇸🇦 العربية
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
               <motion.a
-                href="tel:+212669056627"
+                href="https://wa.me/212669056627"
                 className="flex items-center gap-2 text-sm"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -174,7 +202,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="container mx-auto px-4 py-8"
+          className={cn(
+            "container mx-auto px-4 py-8",
+            language === "ar" ? "rtl" : "ltr"
+          )}
         >
           {children}
         </motion.main>
