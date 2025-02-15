@@ -84,6 +84,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     setIsMobileMenuOpen(false);
   }, [location]);
 
+  // Don't render until we have access to window
   if (!mounted) return null;
 
   return (
@@ -98,72 +99,74 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </motion.button>
 
       <AnimatePresence mode="wait">
-        <motion.aside
-          initial="closed"
-          animate={isMobileMenuOpen ? "open" : "closed"}
-          variants={sidebarVariants}
-          className={cn(
-            "fixed inset-y-0 left-0 z-40 w-64 border-r bg-card/80 backdrop-blur supports-[backdrop-filter]:bg-background/60",
-            "lg:relative lg:translate-x-0",
-            language === "ar" ? "right-0 left-auto" : "left-0"
-          )}
-        >
-          <div className="p-6">
-            <Link href="/">
-              <div className="flex items-center space-x-2 cursor-pointer">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-2"
-                >
-                  <div className="w-8 h-8 text-primary">
-                    <ShoppingCart className="w-full h-full" />
-                  </div>
-                  <span className="font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
-                    Trend Shop
-                  </span>
-                </motion.div>
-              </div>
-            </Link>
-          </div>
+        {(isMobileMenuOpen || window.innerWidth >= 1024) && (
+          <motion.aside
+            initial="closed"
+            animate={isMobileMenuOpen ? "open" : "closed"}
+            variants={sidebarVariants}
+            className={cn(
+              "fixed inset-y-0 left-0 z-40 w-64 border-r bg-card/80 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+              "lg:relative lg:translate-x-0",
+              language === "ar" ? "right-0 left-auto" : "left-0"
+            )}
+          >
+            <div className="p-6">
+              <Link href="/">
+                <div className="flex items-center space-x-2 cursor-pointer">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-2"
+                  >
+                    <div className="w-8 h-8 text-primary">
+                      <ShoppingCart className="w-full h-full" />
+                    </div>
+                    <span className="font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
+                      Trend Shop
+                    </span>
+                  </motion.div>
+                </div>
+              </Link>
+            </div>
 
-          <nav className="px-4 py-2 space-y-6">
-            {menuItems.map((category) => (
-              <div key={category.category}>
-                <h3 className="px-4 text-sm font-semibold text-muted-foreground mb-2">
-                  {translations[category.category.toLowerCase()]}
-                </h3>
-                {category.items.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = location === item.href;
+            <nav className="px-4 py-2 space-y-6">
+              {menuItems.map((category) => (
+                <div key={category.category}>
+                  <h3 className="px-4 text-sm font-semibold text-muted-foreground mb-2">
+                    {translations?.[category.category.toLowerCase()] ?? category.category}
+                  </h3>
+                  {category.items.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = location === item.href;
 
-                  return (
-                    <Link key={item.href} href={item.href}>
-                      <div
-                        className={cn(
-                          "flex items-center gap-2 px-4 py-2 rounded-lg mb-1 transition-colors cursor-pointer",
-                          isActive
-                            ? "bg-primary text-primary-foreground"
-                            : "hover:bg-secondary"
-                        )}
-                      >
-                        <Icon className="w-5 h-5" />
-                        <span>{translations[item.label.toLowerCase()]}</span>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            ))}
-          </nav>
-        </motion.aside>
+                    return (
+                      <Link key={item.href} href={item.href}>
+                        <div
+                          className={cn(
+                            "flex items-center gap-2 px-4 py-2 rounded-lg mb-1 transition-colors cursor-pointer",
+                            isActive
+                              ? "bg-primary text-primary-foreground"
+                              : "hover:bg-secondary"
+                          )}
+                        >
+                          <Icon className="w-5 h-5" />
+                          <span>{translations?.[item.label.toLowerCase()] ?? item.label}</span>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              ))}
+            </nav>
+          </motion.aside>
+        )}
       </AnimatePresence>
 
       <div className="flex-1">
         <header className="border-b sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="container mx-auto px-4 py-4 flex justify-between items-center">
             <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
-              {translations.dashboard}
+              {translations?.dashboard ?? "Dashboard"}
             </h1>
             <div className="flex items-center gap-4">
               <DropdownMenu>
