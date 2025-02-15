@@ -18,21 +18,42 @@ const menuItems = [
   { 
     category: "Social Media",
     items: [
-      { icon: SiInstagram, label: "Instagram", href: "/category/instagram" },
-      { icon: SiTiktok, label: "TikTok", href: "/category/tiktok" },
-      { icon: SiFacebook, label: "Facebook", href: "/category/facebook" },
-      { icon: SiYoutube, label: "YouTube", href: "/category/youtube" },
+      { icon: SiInstagram, label: "Instagram", href: "/" },
+      { icon: SiTiktok, label: "TikTok", href: "/tiktok" },
+      { icon: SiFacebook, label: "Facebook", href: "/facebook" },
+      { icon: SiYoutube, label: "YouTube", href: "/youtube" },
     ]
   },
   {
     category: "Streaming",
     items: [
-      { icon: SiSpotify, label: "Spotify", href: "/category/spotify" },
-      { icon: SiNetflix, label: "Netflix", href: "/category/netflix" },
-      { icon: SiHbo, label: "HBO", href: "/category/hbo" },
+      { icon: SiSpotify, label: "Spotify", href: "/spotify" },
+      { icon: SiNetflix, label: "Netflix", href: "/netflix" },
+      { icon: SiHbo, label: "HBO", href: "/hbo" },
     ]
   }
 ];
+
+const sidebarVariants = {
+  open: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 30
+    }
+  },
+  closed: {
+    x: "-100%",
+    opacity: 0,
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 30
+    }
+  }
+};
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
@@ -43,43 +64,47 @@ export function Layout({ children }: { children: React.ReactNode }) {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location]);
+
   if (!mounted) return null;
 
   return (
     <div className="min-h-screen bg-background flex">
       {/* Mobile menu button */}
-      <button
-        className="lg:hidden fixed top-4 left-4 z-50"
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-background/80 backdrop-blur shadow-lg"
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
       >
         <Menu className="w-6 h-6" />
-      </button>
+      </motion.button>
 
       {/* Sidebar */}
       <AnimatePresence mode="wait">
         <motion.aside
-          initial={{ x: -300, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: -300, opacity: 0 }}
-          transition={{ type: "spring", stiffness: 100 }}
+          initial="closed"
+          animate={isMobileMenuOpen ? "open" : "closed"}
+          variants={sidebarVariants}
           className={cn(
-            "fixed inset-y-0 left-0 z-40 w-64 border-r bg-card/80 backdrop-blur-md",
-            "lg:relative",
-            isMobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+            "fixed inset-y-0 left-0 z-40 w-64 border-r bg-card/80 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+            "lg:relative lg:translate-x-0"
           )}
         >
           <div className="p-6">
             <Link href="/">
-              <a className="flex items-center space-x-2">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center"
-                >
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center space-x-2 cursor-pointer"
+              >
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                   <span className="text-primary-foreground font-bold text-xl">S</span>
-                </motion.div>
+                </div>
                 <span className="font-bold text-xl">SocialBoost</span>
-              </a>
+              </motion.div>
             </Link>
           </div>
 
@@ -95,11 +120,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
                   return (
                     <Link key={item.href} href={item.href}>
-                      <motion.a
+                      <motion.div
                         whileHover={{ x: 4 }}
                         whileTap={{ scale: 0.98 }}
                         className={cn(
-                          "flex items-center gap-2 px-4 py-2 rounded-lg mb-1 transition-colors",
+                          "flex items-center gap-2 px-4 py-2 rounded-lg mb-1 transition-colors cursor-pointer",
                           isActive
                             ? "bg-primary text-primary-foreground"
                             : "hover:bg-secondary"
@@ -107,7 +132,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                       >
                         <Icon className="w-5 h-5" />
                         <span>{item.label}</span>
-                      </motion.a>
+                      </motion.div>
                     </Link>
                   );
                 })}
