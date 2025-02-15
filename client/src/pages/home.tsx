@@ -1,36 +1,63 @@
+import { useQuery } from "@tanstack/react-query";
+import { PlatformTabs } from "@/components/platform-tabs";
+import type { Service } from "@shared/schema";
+import { Layout } from "@/components/layout";
 import { motion } from "framer-motion";
-import { Link } from "wouter";
-import { useLanguage } from "@/lib/language-context";
-import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+
+function LoadingSkeleton() {
+  return (
+    <div className="space-y-8">
+      <div className="space-y-4">
+        <Skeleton className="h-12 w-48 mx-auto" />
+        <Skeleton className="h-4 w-64 mx-auto" />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="space-y-4 p-4 border rounded-lg">
+            <Skeleton className="h-8 w-32" />
+            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-10 w-full" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
-  const { t } = useLanguage();
+  const { data: services, isLoading } = useQuery<Service[]>({
+    queryKey: ["/api/services"],
+  });
 
   return (
-    <div className="container relative min-h-screen flex flex-col items-center justify-center">
-      <motion.div
+    <Layout>
+      <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-center space-y-6"
+        className="space-y-12"
       >
-        <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
-          {t("home.title")}
-        </h1>
-        <p className="mx-auto max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-          {t("home.description")}
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          <Link href="/services">
-            <Button size="lg">{t("home.getStarted")}</Button>
-          </Link>
-          <Link href="/features">
-            <Button variant="outline" size="lg">
-              {t("home.learnMore")}
-            </Button>
-          </Link>
-        </div>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="max-w-3xl mx-auto text-center"
+        >
+          <h1 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
+            Boost Your Digital Presence
+          </h1>
+          <p className="text-xl text-muted-foreground">
+            Get more engagement on social media and access to premium streaming services
+          </p>
+        </motion.div>
+
+        {isLoading ? (
+          <LoadingSkeleton />
+        ) : (
+          services && <PlatformTabs services={services} />
+        )}
       </motion.div>
-    </div>
+    </Layout>
   );
 }

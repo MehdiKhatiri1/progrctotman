@@ -11,7 +11,6 @@ import {
   SiSpotify,
   SiNetflix,
   SiHbo,
-  SiCanva,
 } from "react-icons/si";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/language-context";
@@ -28,9 +27,8 @@ const menuItems = [
     category: "Main",
     items: [
       { icon: ShoppingCart, label: "Store", href: "/store" },
-      { icon: MessageSquare, label: "Services", href: "/services" },
       { icon: CheckCircle, label: "Features", href: "/features" },
-      { icon: Phone, label: "Contact", href: "/contact" }
+      { icon: MessageSquare, label: "Contact", href: "/contact" }
     ]
   },
   {
@@ -48,7 +46,6 @@ const menuItems = [
       { icon: SiSpotify, label: "Spotify", href: "/store?platform=spotify" },
       { icon: SiNetflix, label: "Netflix", href: "/store?platform=netflix" },
       { icon: SiHbo, label: "HBO", href: "/store?platform=hbo" },
-      { icon: SiCanva, label: "Canva", href: "/store?platform=canva" }
     ]
   }
 ];
