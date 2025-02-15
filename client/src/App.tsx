@@ -4,13 +4,21 @@ import { queryClient } from "./lib/queryClient";
 import { CartProvider } from "./lib/cart-context";
 import { Toaster } from "@/components/ui/toaster";
 import { useEffect } from "react";
-import Home from "@/pages/home";
+import Landing from "@/pages/landing";
+import Store from "@/pages/store";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Home} />
+      <Route path="/" component={Landing} />
+      <Route path="/store" component={Store} />
+      <Route path="/tiktok" component={Store} />
+      <Route path="/facebook" component={Store} />
+      <Route path="/youtube" component={Store} />
+      <Route path="/spotify" component={Store} />
+      <Route path="/netflix" component={Store} />
+      <Route path="/hbo" component={Store} />
       <Route component={NotFound} />
     </Switch>
   );

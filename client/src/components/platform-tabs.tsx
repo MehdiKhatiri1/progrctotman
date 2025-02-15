@@ -27,9 +27,16 @@ const platformIcons = {
   hbo: SiHbo
 };
 
-export function PlatformTabs({ services }: { services: Service[] }) {
+interface PlatformTabsProps {
+  services: Service[];
+  initialPlatform?: string;
+}
+
+export function PlatformTabs({ services, initialPlatform = "instagram" }: PlatformTabsProps) {
+  const category = platforms.streaming.includes(initialPlatform) ? "streaming" : "social";
+
   return (
-    <Tabs defaultValue="social" className="w-full">
+    <Tabs defaultValue={category} className="w-full">
       <TabsList className="mb-8">
         <TabsTrigger value="social">Social Media</TabsTrigger>
         <TabsTrigger value="streaming">Streaming</TabsTrigger>
@@ -41,7 +48,7 @@ export function PlatformTabs({ services }: { services: Service[] }) {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <Tabs defaultValue="instagram" className="w-full">
+          <Tabs defaultValue={initialPlatform} className="w-full">
             <TabsList className="grid grid-cols-4 gap-4">
               {platforms.social.map(platform => {
                 const Icon = platformIcons[platform as keyof typeof platformIcons];
@@ -76,7 +83,7 @@ export function PlatformTabs({ services }: { services: Service[] }) {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <Tabs defaultValue="spotify" className="w-full">
+          <Tabs defaultValue={initialPlatform} className="w-full">
             <TabsList className="grid grid-cols-3 gap-4">
               {platforms.streaming.map(platform => {
                 const Icon = platformIcons[platform as keyof typeof platformIcons];
