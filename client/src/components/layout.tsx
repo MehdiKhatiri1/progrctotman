@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "wouter";
 import { CartDrawer } from "./cart-drawer";
-import { Phone, Menu } from "lucide-react";
+import { Phone, Menu, ShoppingCart } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
   SiInstagram,
@@ -15,7 +15,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 
 const menuItems = [
-  { 
+  {
     category: "Social Media",
     items: [
       { icon: SiInstagram, label: "Instagram", href: "/store" },
@@ -72,7 +72,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background flex">
-      {/* Mobile menu button */}
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
@@ -82,7 +81,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Menu className="w-6 h-6" />
       </motion.button>
 
-      {/* Sidebar */}
       <AnimatePresence mode="wait">
         <motion.aside
           initial="closed"
@@ -99,11 +97,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center"
+                  className="flex items-center gap-2"
                 >
-                  <span className="text-primary-foreground font-bold text-xl">S</span>
+                  <div className="w-8 h-8 text-primary">
+                    <ShoppingCart className="w-full h-full" />
+                  </div>
+                  <span className="font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
+                    Trend Shop
+                  </span>
                 </motion.div>
-                <span className="font-bold text-xl">SocialBoost</span>
               </div>
             </Link>
           </div>
@@ -140,11 +142,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </motion.aside>
       </AnimatePresence>
 
-      {/* Main content */}
       <div className="flex-1">
         <header className="border-b sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 className="text-2xl font-bold">Welcome to SocialBoost</h1>
+            <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
+              Welcome to Trend Shop
+            </h1>
             <div className="flex items-center gap-4">
               <motion.a
                 href="tel:+212669056627"

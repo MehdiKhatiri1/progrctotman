@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle, Phone, Mail, MapPin } from "lucide-react";
+import { ArrowRight, CheckCircle, Phone, Mail, MapPin, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 
@@ -30,11 +30,15 @@ export default function Landing() {
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center"
+                  className="flex items-center gap-2"
                 >
-                  <span className="text-primary-foreground font-bold text-xl">S</span>
+                  <div className="w-8 h-8 text-primary">
+                    <ShoppingCart className="w-full h-full" />
+                  </div>
+                  <span className="font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
+                    Trend Shop
+                  </span>
                 </motion.div>
-                <span className="font-bold text-xl">SocialBoost</span>
               </div>
             </Link>
 
