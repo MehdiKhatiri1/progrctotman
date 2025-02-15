@@ -28,7 +28,7 @@ function LoadingSkeleton() {
 
 export default function Store() {
   const [location] = useLocation();
-  const platform = new URLSearchParams(window.location.search).get('platform') || location.split('/')[1] || 'instagram';
+  const platform = location.split('/')[1] || 'instagram';
 
   const { data: services, isLoading, error } = useQuery<Service[]>({
     queryKey: ["/api/services"],

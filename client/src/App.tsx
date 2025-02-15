@@ -4,6 +4,15 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CartProvider } from "./lib/cart-context";
 import { LanguageProvider } from "./lib/language-context";
 import { Toaster } from "@/components/ui/toaster";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 import Landing from "@/pages/landing";
 import Store from "@/pages/store";
 import Features from "@/pages/features";
