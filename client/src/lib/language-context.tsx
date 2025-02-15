@@ -10,34 +10,49 @@ interface LanguageContextType {
 
 const translations = {
   en: {
-    dashboard: "Dashboard",
     store: "Store",
     features: "Features",
     services: "Services",
     contact: "Contact",
     socialMedia: "Social Media",
     streaming: "Streaming",
-    getStarted: "Get Started"
+    getStarted: "Get Started",
+    search: "Search",
+    cart: "Cart",
+    checkout: "Checkout",
+    total: "Total",
+    support: "Support",
+    contactSupport: "Contact Support"
   },
   fr: {
-    dashboard: "Tableau de bord",
     store: "Boutique",
     features: "Fonctionnalités",
     services: "Services",
     contact: "Contact",
     socialMedia: "Réseaux sociaux",
     streaming: "Streaming",
-    getStarted: "Commencer"
+    getStarted: "Commencer",
+    search: "Rechercher",
+    cart: "Panier",
+    checkout: "Commander",
+    total: "Total",
+    support: "Support",
+    contactSupport: "Contacter le support"
   },
   ar: {
-    dashboard: "لوحة القيادة",
     store: "المتجر",
     features: "المميزات",
     services: "الخدمات",
     contact: "اتصل بنا",
     socialMedia: "وسائل التواصل الاجتماعي",
     streaming: "بث",
-    getStarted: "ابدأ الآن"
+    getStarted: "ابدأ الآن",
+    search: "بحث",
+    cart: "سلة التسوق",
+    checkout: "الدفع",
+    total: "المجموع",
+    support: "الدعم",
+    contactSupport: "اتصل بالدعم"
   }
 };
 

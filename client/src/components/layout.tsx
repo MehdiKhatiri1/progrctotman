@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "wouter";
 import { CartDrawer } from "./cart-drawer";
-import { Phone, Menu, ShoppingCart, Globe, MessageSquare } from "lucide-react";
+import { Phone, Menu, ShoppingCart, Globe, MessageSquare, CheckCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
   SiInstagram,
@@ -26,8 +26,9 @@ const menuItems = [
   {
     category: "Main",
     items: [
-      { icon: ShoppingCart, label: "Dashboard", href: "/dashboard" },
       { icon: ShoppingCart, label: "Store", href: "/store" },
+      { icon: CheckCircle, label: "Features", href: "/features" },
+      { icon: MessageSquare, label: "Contact", href: "/contact" }
     ]
   },
   {
@@ -161,8 +162,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
             {/* Contact Support Button */}
             <div className="absolute bottom-4 left-4 right-4">
-              <Button 
-                className="w-full flex items-center gap-2" 
+              <Button
+                className="w-full flex items-center gap-2"
                 variant="outline"
                 asChild
               >
@@ -180,7 +181,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <header className="border-b sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="container mx-auto px-4 py-4 flex justify-between items-center">
             <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
-              {translations?.dashboard ?? "Dashboard"}
+              {translations?.[location.substring(1)] ?? "Trend Shop"}
             </h1>
             <div className="flex items-center gap-4">
               <DropdownMenu>

@@ -6,7 +6,6 @@ import { LanguageProvider } from "./lib/language-context";
 import { Toaster } from "@/components/ui/toaster";
 import Landing from "@/pages/landing";
 import Store from "@/pages/store";
-import Dashboard from "@/pages/dashboard";
 import Features from "@/pages/features";
 import Services from "@/pages/services";
 import Contact from "@/pages/contact";
@@ -16,7 +15,6 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Landing} />
-      <Route path="/dashboard" component={Dashboard} />
       <Route path="/store" component={Store} />
       <Route path="/features" component={Features} />
       <Route path="/services" component={Services} />

@@ -1,117 +1,113 @@
 import {
+  type User,
+  type InsertUser,
   type Service,
   type Order,
   type InsertOrder,
   type OrderItem,
   type InsertOrderItem,
+  users,
+  services,
+  orders,
+  orderItems,
 } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
+import session from "express-session";
+import connectPg from "connect-pg-simple";
+import { pool } from "./db";
+
+const PostgresSessionStore = connectPg(session);
 
 export interface IStorage {
+  // User methods
+  getUser(id: number): Promise<User | undefined>;
+  getUserByUsername(username: string): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
+  createUser(user: InsertUser): Promise<User>;
+
+  // Service methods
   getServices(): Promise<Service[]>;
+  getServiceById(id: number): Promise<Service | undefined>;
+
+  // Order methods
   createOrder(order: InsertOrder): Promise<Order>;
+  getOrdersByUserId(userId: number): Promise<Order[]>;
+  getOrderById(id: number): Promise<Order | undefined>;
+
+  // Order items methods
   createOrderItem(item: InsertOrderItem): Promise<OrderItem>;
+  getOrderItemsByOrderId(orderId: number): Promise<OrderItem[]>;
+
+  // Session store
+  sessionStore: session.SessionStore;
 }
 
-export class MemStorage implements IStorage {
-  private services: Service[];
-  private orders: Order[];
-  private orderItems: OrderItem[];
-  private currentId: number;
+export class DatabaseStorage implements IStorage {
+  sessionStore: session.SessionStore;
 
   constructor() {
-    this.services = [
-      // Social Media Services
-      { 
-        id: 1, 
-        platform: "instagram", 
-        type: "Followers", 
-        quantity: 1000, 
-        price: "30",
-        category: "social",
-        description: "High-quality Instagram followers" 
-      },
-      { id: 2, platform: "instagram", type: "Followers", quantity: 3000, price: "90", category: "social", description: "High-quality Instagram followers" },
-      { id: 3, platform: "instagram", type: "Likes", quantity: 1000, price: "15", category: "social", description: "High-quality Instagram likes" },
-      { id: 4, platform: "instagram", type: "Views", quantity: 5000, price: "20", category: "social", description: "High-quality Instagram views" },
-      { id: 5, platform: "tiktok", type: "Followers", quantity: 1000, price: "30", category: "social", description: "High-quality TikTok followers" },
-      { id: 6, platform: "tiktok", type: "Likes", quantity: 5000, price: "50", category: "social", description: "High-quality TikTok likes" },
-      { id: 7, platform: "tiktok", type: "Views", quantity: 10000, price: "20", category: "social", description: "High-quality TikTok views" },
-      { id: 8, platform: "facebook", type: "Followers", quantity: 1000, price: "30", category: "social", description: "High-quality Facebook followers" },
-      { id: 9, platform: "facebook", type: "Likes", quantity: 5000, price: "35", category: "social", description: "High-quality Facebook likes" },
-      { id: 10, platform: "facebook", type: "Views", quantity: 60000, price: "150", category: "social", description: "High-quality Facebook views" },
-      { id: 11, platform: "youtube", type: "Followers", quantity: 1000, price: "120", category: "social", description: "High-quality YouTube followers" },
-      { id: 12, platform: "youtube", type: "Likes", quantity: 5000, price: "70", category: "social", description: "High-quality YouTube likes" },
-      { id: 13, platform: "youtube", type: "Views", quantity: 10000, price: "230", category: "social", description: "High-quality YouTube views" },
-
-      // Streaming Services
-      { 
-        id: 14, 
-        platform: "spotify", 
-        type: "Premium", 
-        quantity: 1, 
-        price: "40",
-        category: "streaming",
-        description: "1 Month Spotify Premium Subscription" 
-      },
-      { 
-        id: 15, 
-        platform: "spotify", 
-        type: "Family", 
-        quantity: 6, 
-        price: "80",
-        category: "streaming",
-        description: "1 Month Spotify Family Plan (up to 6 accounts)" 
-      },
-      { 
-        id: 16, 
-        platform: "netflix", 
-        type: "Standard", 
-        quantity: 1, 
-        price: "90",
-        category: "streaming",
-        description: "1 Month Netflix Standard HD Plan" 
-      },
-      { 
-        id: 17, 
-        platform: "netflix", 
-        type: "Premium", 
-        quantity: 1, 
-        price: "120",
-        category: "streaming",
-        description: "1 Month Netflix Premium 4K Plan" 
-      },
-      { 
-        id: 18, 
-        platform: "hbo", 
-        type: "Standard", 
-        quantity: 1, 
-        price: "70",
-        category: "streaming",
-        description: "1 Month HBO Max Subscription" 
-      }
-    ];
-    this.orders = [];
-    this.orderItems = [];
-    this.currentId = 19;
+    this.sessionStore = new PostgresSessionStore({
+      pool,
+      createTableIfMissing: true,
+    });
   }
 
+  // User methods
+  async getUser(id: number): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user;
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user;
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const [user] = await db.insert(users).values(insertUser).returning();
+    return user;
+  }
+
+  // Service methods
   async getServices(): Promise<Service[]> {
-    return this.services;
+    return db.select().from(services);
   }
 
+  async getServiceById(id: number): Promise<Service | undefined> {
+    const [service] = await db.select().from(services).where(eq(services.id, id));
+    return service;
+  }
+
+  // Order methods
   async createOrder(insertOrder: InsertOrder): Promise<Order> {
-    const id = this.currentId++;
-    const order: Order = { ...insertOrder, id };
-    this.orders.push(order);
+    const [order] = await db.insert(orders).values(insertOrder).returning();
     return order;
   }
 
+  async getOrdersByUserId(userId: number): Promise<Order[]> {
+    return db.select().from(orders).where(eq(orders.userId, userId));
+  }
+
+  async getOrderById(id: number): Promise<Order | undefined> {
+    const [order] = await db.select().from(orders).where(eq(orders.id, id));
+    return order;
+  }
+
+  // Order items methods
   async createOrderItem(insertItem: InsertOrderItem): Promise<OrderItem> {
-    const id = this.currentId++;
-    const item: OrderItem = { ...insertItem, id };
-    this.orderItems.push(item);
+    const [item] = await db.insert(orderItems).values(insertItem).returning();
     return item;
+  }
+
+  async getOrderItemsByOrderId(orderId: number): Promise<OrderItem[]> {
+    return db.select().from(orderItems).where(eq(orderItems.orderId, orderId));
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();

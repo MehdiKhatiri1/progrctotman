@@ -1,6 +1,14 @@
-import { pgTable, text, serial, integer, decimal } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, decimal, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  username: text("username").notNull().unique(),
+  email: text("email").notNull(),
+  password: text("password").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
 
 export const services = pgTable("services", {
   id: serial("id").primaryKey(),
@@ -14,11 +22,10 @@ export const services = pgTable("services", {
 
 export const orders = pgTable("orders", {
   id: serial("id").primaryKey(),
-  customerName: text("customer_name").notNull(),
-  email: text("email").notNull(),
-  phoneNumber: text("phone_number").notNull(),
-  total: decimal("total").notNull(),
+  userId: integer("user_id").notNull(),
   status: text("status").notNull().default("pending"),
+  total: decimal("total").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 export const orderItems = pgTable("order_items", {
@@ -29,10 +36,22 @@ export const orderItems = pgTable("order_items", {
   price: decimal("price").notNull(),
 });
 
+// Auth schemas
+export const insertUserSchema = createInsertSchema(users).extend({
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+});
+
+// Service schemas
 export const insertServiceSchema = createInsertSchema(services);
 export const insertOrderSchema = createInsertSchema(orders);
 export const insertOrderItemSchema = createInsertSchema(orderItems);
 
+// Types
+export type User = typeof users.$inferSelect;
+export type InsertUser = z.infer<typeof insertUserSchema>;
 export type Service = typeof services.$inferSelect;
 export type InsertService = z.infer<typeof insertServiceSchema>;
 export type Order = typeof orders.$inferSelect;
