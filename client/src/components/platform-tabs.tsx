@@ -1,7 +1,6 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ServicesGrid } from "./services-grid";
 import type { Service } from "@shared/schema";
-import { type TabsProps } from "@/components/ui/tabs";
 import { 
   SiInstagram, 
   SiTiktok, 
@@ -12,12 +11,7 @@ import {
   SiHbo
 } from "react-icons/si";
 import { motion } from "framer-motion";
-import { Link, useLocation } from "wouter";
-
-const useSearchParams = () => {
-  const [location] = useLocation();
-  return new URLSearchParams(location.search);
-};
+import { useLocation, useNavigate } from "wouter";
 
 const platforms = {
   social: ["instagram", "tiktok", "facebook", "youtube"],
@@ -39,8 +33,13 @@ interface PlatformTabsProps {
   initialPlatform?: string;
 }
 
-export function PlatformTabs({ services, initialPlatform = "instagram" }: PlatformTabsProps) {
+export function PlatformTabs({ services, initialPlatform = "all" }: PlatformTabsProps) {
+  const [location, setLocation] = useLocation();
   const category = platforms.streaming.includes(initialPlatform) ? "streaming" : "social";
+
+  const handlePlatformChange = (platform: string) => {
+    setLocation(`/store/${platform}`);
+  };
 
   return (
     <Tabs defaultValue={category} className="w-full">
@@ -55,7 +54,11 @@ export function PlatformTabs({ services, initialPlatform = "instagram" }: Platfo
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <Tabs defaultValue={initialPlatform} className="w-full">
+          <Tabs 
+            defaultValue={initialPlatform} 
+            className="w-full"
+            onValueChange={handlePlatformChange}
+          >
             <TabsList className="grid grid-cols-4 gap-4">
               {platforms.social.map(platform => {
                 const Icon = platformIcons[platform as keyof typeof platformIcons];
@@ -90,7 +93,11 @@ export function PlatformTabs({ services, initialPlatform = "instagram" }: Platfo
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <Tabs defaultValue={initialPlatform} className="w-full">
+          <Tabs 
+            defaultValue={initialPlatform} 
+            className="w-full"
+            onValueChange={handlePlatformChange}
+          >
             <TabsList className="grid grid-cols-3 gap-4">
               {platforms.streaming.map(platform => {
                 const Icon = platformIcons[platform as keyof typeof platformIcons];

@@ -7,8 +7,6 @@ import { Toaster } from "@/components/ui/toaster";
 
 import Landing from "@/pages/landing";
 import Store from "@/pages/store";
-import Features from "@/pages/features";
-import Services from "@/pages/services";
 import Contact from "@/pages/contact";
 import Auth from "@/pages/auth";
 import NotFound from "@/pages/not-found";
@@ -27,17 +25,13 @@ function Router() {
     <Switch>
       <Route path="/" component={Landing} />
       <Route path="/store" component={Store} />
-      <Route path="/features" component={Features} />
-      <Route path="/services" component={Services} />
       <Route path="/contact" component={Contact} />
       <Route path="/auth" component={Auth} />
-      <Route path="/instagram" component={Store} />
-      <Route path="/tiktok" component={Store} />
-      <Route path="/facebook" component={Store} />
-      <Route path="/youtube" component={Store} />
-      <Route path="/spotify" component={Store} />
-      <Route path="/netflix" component={Store} />
-      <Route path="/hbo" component={Store} />
+
+      {/* Platform-specific store routes with query parameters */}
+      <Route path="/store/:platform?" component={Store} />
+
+      {/* Catch-all route for 404 */}
       <Route component={NotFound} />
     </Switch>
   );

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
 type Language = "en" | "fr" | "ar";
 
@@ -10,18 +10,20 @@ interface LanguageContextType {
 
 const translations = {
   en: {
+    main: "Main",
     store: "Store",
-    features: "Features",
-    services: "Services",
     contact: "Contact",
     socialMedia: "Social Media",
     streaming: "Streaming",
-    getStarted: "Get Started",
+    instagram: "Instagram",
+    tiktok: "TikTok",
+    facebook: "Facebook",
+    youtube: "YouTube",
+    spotify: "Spotify",
+    netflix: "Netflix",
     search: "Search",
     cart: "Cart",
     checkout: "Checkout",
-    total: "Total",
-    support: "Support",
     contactSupport: "Contact Support",
     login: "Login",
     register: "Register",
@@ -35,23 +37,32 @@ const translations = {
     haveAccount: "Have an account? Login",
     welcomeTitle: "Welcome to Trend Shop",
     welcomeDescription: "Your one-stop shop for social media growth and premium streaming services.",
-    feature1: "High-quality social media services",
-    feature2: "Premium streaming accounts",
-    feature3: "24/7 customer support"
+    errorLoadingServices: "Error Loading Services",
+    tryAgainLater: "Please try again later",
+    total: "Total",
+    quantity: "Quantity",
+    price: "Price",
+    description: "Description",
+    addToCart: "Add to Cart",
+    removeFromCart: "Remove from Cart",
+    emptyCart: "Your cart is empty",
+    continueToCheckout: "Continue to Checkout"
   },
   fr: {
+    main: "Principal",
     store: "Boutique",
-    features: "Fonctionnalités",
-    services: "Services",
     contact: "Contact",
     socialMedia: "Réseaux sociaux",
     streaming: "Streaming",
-    getStarted: "Commencer",
+    instagram: "Instagram",
+    tiktok: "TikTok",
+    facebook: "Facebook",
+    youtube: "YouTube",
+    spotify: "Spotify",
+    netflix: "Netflix",
     search: "Rechercher",
     cart: "Panier",
-    checkout: "Commander",
-    total: "Total",
-    support: "Support",
+    checkout: "Paiement",
     contactSupport: "Contacter le support",
     login: "Connexion",
     register: "S'inscrire",
@@ -65,23 +76,32 @@ const translations = {
     haveAccount: "Vous avez un compte? Connexion",
     welcomeTitle: "Bienvenue sur Trend Shop",
     welcomeDescription: "Votre guichet unique pour la croissance des médias sociaux et les services de streaming premium.",
-    feature1: "Services de médias sociaux de haute qualité",
-    feature2: "Comptes de streaming premium",
-    feature3: "Support client 24/7"
+    errorLoadingServices: "Erreur de chargement des services",
+    tryAgainLater: "Veuillez réessayer plus tard",
+    total: "Total",
+    quantity: "Quantité",
+    price: "Prix",
+    description: "Description",
+    addToCart: "Ajouter au panier",
+    removeFromCart: "Retirer du panier",
+    emptyCart: "Votre panier est vide",
+    continueToCheckout: "Continuer vers le paiement"
   },
   ar: {
+    main: "رئيسي",
     store: "المتجر",
-    features: "المميزات",
-    services: "الخدمات",
     contact: "اتصل بنا",
     socialMedia: "وسائل التواصل الاجتماعي",
     streaming: "بث",
-    getStarted: "ابدأ الآن",
+    instagram: "انستغرام",
+    tiktok: "تيك توك",
+    facebook: "فيسبوك",
+    youtube: "يوتيوب",
+    spotify: "سبوتيفاي",
+    netflix: "نتفليكس",
     search: "بحث",
-    cart: "سلة التسوق",
+    cart: "السلة",
     checkout: "الدفع",
-    total: "المجموع",
-    support: "الدعم",
     contactSupport: "اتصل بالدعم",
     login: "تسجيل الدخول",
     register: "إنشاء حساب",
@@ -95,9 +115,16 @@ const translations = {
     haveAccount: "لديك حساب؟ سجل دخول",
     welcomeTitle: "مرحباً بك في Trend Shop",
     welcomeDescription: "وجهتك الشاملة لنمو وسائل التواصل الاجتماعي وخدمات البث المميزة.",
-    feature1: "خدمات وسائل التواصل الاجتماعي عالية الجودة",
-    feature2: "حسابات بث مميزة",
-    feature3: "دعم العملاء على مدار الساعة"
+    errorLoadingServices: "خطأ في تحميل الخدمات",
+    tryAgainLater: "يرجى المحاولة لاحقاً",
+    total: "المجموع",
+    quantity: "الكمية",
+    price: "السعر",
+    description: "الوصف",
+    addToCart: "أضف إلى السلة",
+    removeFromCart: "إزالة من السلة",
+    emptyCart: "سلة التسوق فارغة",
+    continueToCheckout: "المتابعة إلى الدفع"
   }
 };
 
@@ -105,6 +132,11 @@ const LanguageContext = createContext<LanguageContextType | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>("en");
+
+  useEffect(() => {
+    document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+    document.documentElement.lang = language;
+  }, [language]);
 
   return (
     <LanguageContext.Provider
