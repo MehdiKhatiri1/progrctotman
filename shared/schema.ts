@@ -8,6 +8,8 @@ export const services = pgTable("services", {
   type: text("type").notNull(),
   quantity: integer("quantity").notNull(),
   price: decimal("price").notNull(),
+  category: text("category").notNull().default("social"), // 'social' or 'streaming'
+  description: text("description"),
 });
 
 export const orders = pgTable("orders", {

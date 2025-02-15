@@ -1,8 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { PlatformTabs } from "@/components/platform-tabs";
+import type { Service } from "@shared/schema";
+import { Layout } from "@/components/layout";
+import { motion } from "framer-motion";
 import { CartDrawer } from "@/components/cart-drawer";
 import { Phone } from "lucide-react";
-import type { Service } from "@shared/schema";
 
 export default function Home() {
   const { data: services, isLoading } = useQuery<Service[]>({
@@ -11,17 +13,19 @@ export default function Home() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse space-y-4">
-          <div className="h-4 bg-gray-200 rounded w-[200px]"></div>
-          <div className="h-4 bg-gray-200 rounded w-[150px]"></div>
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-pulse space-y-4">
+            <div className="h-4 bg-gray-200 rounded w-[200px]"></div>
+            <div className="h-4 bg-gray-200 rounded w-[150px]"></div>
+          </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <Layout>
       <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold">Social Boost</h1>
@@ -38,18 +42,20 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
-        <div className="max-w-3xl mx-auto text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4">
-            Boost Your Social Presence
-          </h2>
-          <p className="text-muted-foreground">
-            Get more followers, likes, and views for your social media accounts
-          </p>
-        </div>
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-3xl mx-auto text-center mb-12"
+      >
+        <h2 className="text-4xl font-bold mb-4">
+          Boost Your Digital Presence
+        </h2>
+        <p className="text-muted-foreground">
+          Get more engagement on social media and access to premium streaming services
+        </p>
+      </motion.div>
 
-        {services && <PlatformTabs services={services} />}
-      </main>
-    </div>
+      {services && <PlatformTabs services={services} />}
+    </Layout>
   );
 }

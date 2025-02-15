@@ -20,23 +20,79 @@ export class MemStorage implements IStorage {
 
   constructor() {
     this.services = [
-      { id: 1, platform: "instagram", type: "Followers", quantity: 1000, price: "30" },
-      { id: 2, platform: "instagram", type: "Followers", quantity: 3000, price: "90" },
-      { id: 3, platform: "instagram", type: "Likes", quantity: 1000, price: "15" },
-      { id: 4, platform: "instagram", type: "Views", quantity: 5000, price: "20" },
-      { id: 5, platform: "tiktok", type: "Followers", quantity: 1000, price: "30" },
-      { id: 6, platform: "tiktok", type: "Likes", quantity: 5000, price: "50" },
-      { id: 7, platform: "tiktok", type: "Views", quantity: 10000, price: "20" },
-      { id: 8, platform: "facebook", type: "Followers", quantity: 1000, price: "30" },
-      { id: 9, platform: "facebook", type: "Likes", quantity: 5000, price: "35" },
-      { id: 10, platform: "facebook", type: "Views", quantity: 60000, price: "150" },
-      { id: 11, platform: "youtube", type: "Followers", quantity: 1000, price: "120" },
-      { id: 12, platform: "youtube", type: "Likes", quantity: 5000, price: "70" },
-      { id: 13, platform: "youtube", type: "Views", quantity: 10000, price: "230" },
+      // Social Media Services
+      { 
+        id: 1, 
+        platform: "instagram", 
+        type: "Followers", 
+        quantity: 1000, 
+        price: "30",
+        category: "social",
+        description: "High-quality Instagram followers" 
+      },
+      { id: 2, platform: "instagram", type: "Followers", quantity: 3000, price: "90", category: "social", description: "High-quality Instagram followers" },
+      { id: 3, platform: "instagram", type: "Likes", quantity: 1000, price: "15", category: "social", description: "High-quality Instagram likes" },
+      { id: 4, platform: "instagram", type: "Views", quantity: 5000, price: "20", category: "social", description: "High-quality Instagram views" },
+      { id: 5, platform: "tiktok", type: "Followers", quantity: 1000, price: "30", category: "social", description: "High-quality TikTok followers" },
+      { id: 6, platform: "tiktok", type: "Likes", quantity: 5000, price: "50", category: "social", description: "High-quality TikTok likes" },
+      { id: 7, platform: "tiktok", type: "Views", quantity: 10000, price: "20", category: "social", description: "High-quality TikTok views" },
+      { id: 8, platform: "facebook", type: "Followers", quantity: 1000, price: "30", category: "social", description: "High-quality Facebook followers" },
+      { id: 9, platform: "facebook", type: "Likes", quantity: 5000, price: "35", category: "social", description: "High-quality Facebook likes" },
+      { id: 10, platform: "facebook", type: "Views", quantity: 60000, price: "150", category: "social", description: "High-quality Facebook views" },
+      { id: 11, platform: "youtube", type: "Followers", quantity: 1000, price: "120", category: "social", description: "High-quality YouTube followers" },
+      { id: 12, platform: "youtube", type: "Likes", quantity: 5000, price: "70", category: "social", description: "High-quality YouTube likes" },
+      { id: 13, platform: "youtube", type: "Views", quantity: 10000, price: "230", category: "social", description: "High-quality YouTube views" },
+
+      // Streaming Services
+      { 
+        id: 14, 
+        platform: "spotify", 
+        type: "Premium", 
+        quantity: 1, 
+        price: "40",
+        category: "streaming",
+        description: "1 Month Spotify Premium Subscription" 
+      },
+      { 
+        id: 15, 
+        platform: "spotify", 
+        type: "Family", 
+        quantity: 6, 
+        price: "80",
+        category: "streaming",
+        description: "1 Month Spotify Family Plan (up to 6 accounts)" 
+      },
+      { 
+        id: 16, 
+        platform: "netflix", 
+        type: "Standard", 
+        quantity: 1, 
+        price: "90",
+        category: "streaming",
+        description: "1 Month Netflix Standard HD Plan" 
+      },
+      { 
+        id: 17, 
+        platform: "netflix", 
+        type: "Premium", 
+        quantity: 1, 
+        price: "120",
+        category: "streaming",
+        description: "1 Month Netflix Premium 4K Plan" 
+      },
+      { 
+        id: 18, 
+        platform: "hbo", 
+        type: "Standard", 
+        quantity: 1, 
+        price: "70",
+        category: "streaming",
+        description: "1 Month HBO Max Subscription" 
+      }
     ];
     this.orders = [];
     this.orderItems = [];
-    this.currentId = 1;
+    this.currentId = 19;
   }
 
   async getServices(): Promise<Service[]> {
