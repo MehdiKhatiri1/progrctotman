@@ -28,11 +28,22 @@ function LoadingSkeleton() {
 
 export default function Store() {
   const [location] = useLocation();
-  const platform = location.split('/')[1] || 'instagram';
+  const platform = new URLSearchParams(window.location.search).get('platform') || location.split('/')[1] || 'instagram';
 
-  const { data: services, isLoading } = useQuery<Service[]>({
+  const { data: services, isLoading, error } = useQuery<Service[]>({
     queryKey: ["/api/services"],
   });
+
+  if (error) {
+    return (
+      <Layout>
+        <div className="text-center py-12">
+          <h2 className="text-2xl font-bold text-destructive mb-4">Error Loading Services</h2>
+          <p className="text-muted-foreground">Please try again later</p>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -58,8 +69,12 @@ export default function Store() {
 
         {isLoading ? (
           <LoadingSkeleton />
+        ) : services && services.length > 0 ? (
+          <PlatformTabs services={services} initialPlatform={platform} />
         ) : (
-          services && <PlatformTabs services={services} initialPlatform={platform} />
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">No services available at the moment.</p>
+          </div>
         )}
       </motion.div>
     </Layout>
