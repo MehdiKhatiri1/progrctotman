@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "wouter";
 import { CartDrawer } from "./cart-drawer";
-import { Phone, Menu, ShoppingCart, Globe } from "lucide-react";
+import { Phone, Menu, ShoppingCart, Globe, MessageSquare } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
   SiInstagram,
@@ -33,18 +33,18 @@ const menuItems = [
   {
     category: "Social Media",
     items: [
-      { icon: SiInstagram, label: "Instagram", href: "/instagram" },
-      { icon: SiTiktok, label: "TikTok", href: "/tiktok" },
-      { icon: SiFacebook, label: "Facebook", href: "/facebook" },
-      { icon: SiYoutube, label: "YouTube", href: "/youtube" },
+      { icon: SiInstagram, label: "Instagram", href: "/store?platform=instagram" },
+      { icon: SiTiktok, label: "TikTok", href: "/store?platform=tiktok" },
+      { icon: SiFacebook, label: "Facebook", href: "/store?platform=facebook" },
+      { icon: SiYoutube, label: "YouTube", href: "/store?platform=youtube" },
     ]
   },
   {
     category: "Streaming",
     items: [
-      { icon: SiSpotify, label: "Spotify", href: "/spotify" },
-      { icon: SiNetflix, label: "Netflix", href: "/netflix" },
-      { icon: SiHbo, label: "HBO", href: "/hbo" },
+      { icon: SiSpotify, label: "Spotify", href: "/store?platform=spotify" },
+      { icon: SiNetflix, label: "Netflix", href: "/store?platform=netflix" },
+      { icon: SiHbo, label: "HBO", href: "/store?platform=hbo" },
     ]
   }
 ];
@@ -84,7 +84,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
     setIsMobileMenuOpen(false);
   }, [location]);
 
-  // Don't render until we have access to window
   if (!mounted) return null;
 
   return (
@@ -102,7 +101,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {(isMobileMenuOpen || window.innerWidth >= 1024) && (
           <motion.aside
             initial="closed"
-            animate={isMobileMenuOpen ? "open" : "closed"}
+            animate="open"
+            exit="closed"
             variants={sidebarVariants}
             className={cn(
               "fixed inset-y-0 left-0 z-40 w-64 border-r bg-card/80 backdrop-blur supports-[backdrop-filter]:bg-background/60",
@@ -112,20 +112,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
           >
             <div className="p-6">
               <Link href="/">
-                <div className="flex items-center space-x-2 cursor-pointer">
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-2"
-                  >
-                    <div className="w-8 h-8 text-primary">
-                      <ShoppingCart className="w-full h-full" />
-                    </div>
-                    <span className="font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
-                      Trend Shop
-                    </span>
-                  </motion.div>
-                </div>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <div className="w-8 h-8 text-primary">
+                    <ShoppingCart className="w-full h-full" />
+                  </div>
+                  <span className="font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
+                    Trend Shop
+                  </span>
+                </motion.div>
               </Link>
             </div>
 
@@ -141,7 +139,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
                     return (
                       <Link key={item.href} href={item.href}>
-                        <div
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                           className={cn(
                             "flex items-center gap-2 px-4 py-2 rounded-lg mb-1 transition-colors cursor-pointer",
                             isActive
@@ -151,13 +151,27 @@ export function Layout({ children }: { children: React.ReactNode }) {
                         >
                           <Icon className="w-5 h-5" />
                           <span>{translations?.[item.label.toLowerCase()] ?? item.label}</span>
-                        </div>
+                        </motion.div>
                       </Link>
                     );
                   })}
                 </div>
               ))}
             </nav>
+
+            {/* Contact Support Button */}
+            <div className="absolute bottom-4 left-4 right-4">
+              <Button 
+                className="w-full flex items-center gap-2" 
+                variant="outline"
+                asChild
+              >
+                <a href="https://wa.me/212669056627" target="_blank" rel="noopener noreferrer">
+                  <MessageSquare className="w-4 h-4" />
+                  Contact Support
+                </a>
+              </Button>
+            </div>
           </motion.aside>
         )}
       </AnimatePresence>
