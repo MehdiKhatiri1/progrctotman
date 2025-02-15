@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Phone as PhoneIcon } from "lucide-react";
+import { Phone } from "lucide-react";
 
 function LoadingSkeleton() {
   return (

@@ -11,6 +11,12 @@ import {
   SiHbo
 } from "react-icons/si";
 import { motion } from "framer-motion";
+import { Link, useLocation, useSearchParams as useWouterSearchParams } from "wouter";
+
+const useSearchParams = () => {
+  const [location] = useLocation();
+  return new URLSearchParams(useWouterSearchParams());
+};
 
 const platforms = {
   social: ["instagram", "tiktok", "facebook", "youtube"],
