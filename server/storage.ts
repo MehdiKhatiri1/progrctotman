@@ -29,6 +29,7 @@ export interface IStorage {
   // Service methods
   getServices(): Promise<Service[]>;
   getServiceById(id: number): Promise<Service | undefined>;
+  createService(service: Service): Promise<Service>;
 
   // Order methods
   createOrder(order: InsertOrder): Promise<Order>;
@@ -55,58 +56,123 @@ export class DatabaseStorage implements IStorage {
 
   // User methods
   async getUser(id: number): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
-    return user;
+    try {
+      const [user] = await db.select().from(users).where(eq(users.id, id));
+      return user;
+    } catch (error) {
+      console.error("Error getting user:", error);
+      throw error;
+    }
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.username, username));
-    return user;
+    try {
+      const [user] = await db.select().from(users).where(eq(users.username, username));
+      return user;
+    } catch (error) {
+      console.error("Error getting user by username:", error);
+      throw error;
+    }
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.email, email));
-    return user;
+    try {
+      const [user] = await db.select().from(users).where(eq(users.email, email));
+      return user;
+    } catch (error) {
+      console.error("Error getting user by email:", error);
+      throw error;
+    }
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const [user] = await db.insert(users).values(insertUser).returning();
-    return user;
+    try {
+      const [user] = await db.insert(users).values(insertUser).returning();
+      return user;
+    } catch (error) {
+      console.error("Error creating user:", error);
+      throw error;
+    }
   }
 
   // Service methods
   async getServices(): Promise<Service[]> {
-    return db.select().from(services);
+    try {
+      return await db.select().from(services);
+    } catch (error) {
+      console.error("Error getting services:", error);
+      throw error;
+    }
   }
 
   async getServiceById(id: number): Promise<Service | undefined> {
-    const [service] = await db.select().from(services).where(eq(services.id, id));
-    return service;
+    try {
+      const [service] = await db.select().from(services).where(eq(services.id, id));
+      return service;
+    } catch (error) {
+      console.error("Error getting service by id:", error);
+      throw error;
+    }
+  }
+
+  async createService(service: Service): Promise<Service> {
+    try {
+      const [createdService] = await db.insert(services).values(service).returning();
+      return createdService;
+    } catch (error) {
+      console.error("Error creating service:", error);
+      throw error;
+    }
   }
 
   // Order methods
   async createOrder(insertOrder: InsertOrder): Promise<Order> {
-    const [order] = await db.insert(orders).values(insertOrder).returning();
-    return order;
+    try {
+      const [order] = await db.insert(orders).values(insertOrder).returning();
+      return order;
+    } catch (error) {
+      console.error("Error creating order:", error);
+      throw error;
+    }
   }
 
   async getOrdersByUserId(userId: number): Promise<Order[]> {
-    return db.select().from(orders).where(eq(orders.userId, userId));
+    try {
+      return await db.select().from(orders).where(eq(orders.userId, userId));
+    } catch (error) {
+      console.error("Error getting orders by user id:", error);
+      throw error;
+    }
   }
 
   async getOrderById(id: number): Promise<Order | undefined> {
-    const [order] = await db.select().from(orders).where(eq(orders.id, id));
-    return order;
+    try {
+      const [order] = await db.select().from(orders).where(eq(orders.id, id));
+      return order;
+    } catch (error) {
+      console.error("Error getting order by id:", error);
+      throw error;
+    }
   }
 
   // Order items methods
   async createOrderItem(insertItem: InsertOrderItem): Promise<OrderItem> {
-    const [item] = await db.insert(orderItems).values(insertItem).returning();
-    return item;
+    try {
+      const [item] = await db.insert(orderItems).values(insertItem).returning();
+      return item;
+    } catch (error) {
+      console.error("Error creating order item:", error);
+      throw error;
+    }
   }
 
   async getOrderItemsByOrderId(orderId: number): Promise<OrderItem[]> {
-    return db.select().from(orderItems).where(eq(orderItems.orderId, orderId));
+    try {
+      return await db.select().from(orderItems).where(eq(orderItems.orderId, orderId));
+    } catch (error) {
+      console.error("Error getting order items:", error);
+      throw error;
+    }
   }
 }
 
