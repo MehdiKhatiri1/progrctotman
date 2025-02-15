@@ -4,10 +4,12 @@ import { queryClient } from "./lib/queryClient";
 import { CartProvider } from "./lib/cart-context";
 import { LanguageProvider } from "./lib/language-context";
 import { Toaster } from "@/components/ui/toaster";
-import { useEffect } from "react";
 import Landing from "@/pages/landing";
 import Store from "@/pages/store";
 import Dashboard from "@/pages/dashboard";
+import Features from "@/pages/features";
+import Services from "@/pages/services";
+import Contact from "@/pages/contact";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -16,6 +18,9 @@ function Router() {
       <Route path="/" component={Landing} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/store" component={Store} />
+      <Route path="/features" component={Features} />
+      <Route path="/services" component={Services} />
+      <Route path="/contact" component={Contact} />
       <Route path="/instagram" component={Store} />
       <Route path="/tiktok" component={Store} />
       <Route path="/facebook" component={Store} />

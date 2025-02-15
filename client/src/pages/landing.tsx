@@ -19,28 +19,32 @@ const services = [
     name: "Instagram",
     description: "Boost your Instagram presence with real followers, likes, and engagement",
     link: "/instagram",
-    color: "from-pink-500 to-purple-500"
+    color: "from-pink-500 to-purple-500",
+    platform: "instagram"
   },
   {
     icon: SiTiktok,
     name: "TikTok",
     description: "Grow your TikTok audience and increase your video views",
     link: "/tiktok",
-    color: "from-black to-gray-800"
+    color: "from-black to-gray-800",
+    platform: "tiktok"
   },
   {
     icon: SiFacebook,
     name: "Facebook",
     description: "Enhance your Facebook page with authentic likes and followers",
     link: "/facebook",
-    color: "from-blue-600 to-blue-800"
+    color: "from-blue-600 to-blue-800",
+    platform: "facebook"
   },
   {
     icon: SiYoutube,
     name: "YouTube",
     description: "Get more YouTube subscribers and video views",
     link: "/youtube",
-    color: "from-red-600 to-red-800"
+    color: "from-red-600 to-red-800",
+    platform: "youtube"
   }
 ];
 
@@ -50,21 +54,24 @@ const streamingServices = [
     name: "Spotify",
     description: "Premium music streaming experience",
     link: "/spotify",
-    color: "from-green-500 to-green-700"
+    color: "from-green-500 to-green-700",
+    platform: "spotify"
   },
   {
     icon: SiNetflix,
     name: "Netflix",
     description: "Access to premium Netflix content",
     link: "/netflix",
-    color: "from-red-700 to-red-900"
+    color: "from-red-700 to-red-900",
+    platform: "netflix"
   },
   {
     icon: SiHbo,
     name: "HBO",
     description: "Stream HBO's exclusive content",
     link: "/hbo",
-    color: "from-purple-700 to-purple-900"
+    color: "from-purple-700 to-purple-900",
+    platform: "hbo"
   }
 ];
 
@@ -120,7 +127,7 @@ export default function Landing() {
             </Link>
 
             <div className="hidden md:flex items-center space-x-6">
-              <Link href="#features">
+              <Link href="/features">
                 <motion.span 
                   whileHover={{ scale: 1.05 }}
                   className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
@@ -128,7 +135,7 @@ export default function Landing() {
                   Features
                 </motion.span>
               </Link>
-              <Link href="#services">
+              <Link href="/services">
                 <motion.span 
                   whileHover={{ scale: 1.05 }}
                   className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
@@ -136,7 +143,7 @@ export default function Landing() {
                   Services
                 </motion.span>
               </Link>
-              <Link href="#contact">
+              <Link href="/contact">
                 <motion.span 
                   whileHover={{ scale: 1.05 }}
                   className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
@@ -222,7 +229,7 @@ export default function Landing() {
               {services.map((service) => {
                 const Icon = service.icon;
                 return (
-                  <Link key={service.name} href={service.link}>
+                  <Link key={service.name} href={`/store?platform=${service.platform}`}>
                     <motion.div
                       variants={item}
                       whileHover="hover"
@@ -258,7 +265,7 @@ export default function Landing() {
               {streamingServices.map((service) => {
                 const Icon = service.icon;
                 return (
-                  <Link key={service.name} href={service.link}>
+                  <Link key={service.name} href={`/store?platform=${service.platform}`}>
                     <motion.div
                       variants={item}
                       whileHover="hover"
