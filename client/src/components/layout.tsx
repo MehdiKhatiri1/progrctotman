@@ -18,7 +18,7 @@ const menuItems = [
   { 
     category: "Social Media",
     items: [
-      { icon: SiInstagram, label: "Instagram", href: "/" },
+      { icon: SiInstagram, label: "Instagram", href: "/store" },
       { icon: SiTiktok, label: "TikTok", href: "/tiktok" },
       { icon: SiFacebook, label: "Facebook", href: "/facebook" },
       { icon: SiYoutube, label: "YouTube", href: "/youtube" },
@@ -95,16 +95,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         >
           <div className="p-6">
             <Link href="/">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center space-x-2 cursor-pointer"
-              >
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <div className="flex items-center space-x-2 cursor-pointer">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center"
+                >
                   <span className="text-primary-foreground font-bold text-xl">S</span>
-                </div>
+                </motion.div>
                 <span className="font-bold text-xl">SocialBoost</span>
-              </motion.div>
+              </div>
             </Link>
           </div>
 
@@ -120,9 +120,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
                   return (
                     <Link key={item.href} href={item.href}>
-                      <motion.div
-                        whileHover={{ x: 4 }}
-                        whileTap={{ scale: 0.98 }}
+                      <div
                         className={cn(
                           "flex items-center gap-2 px-4 py-2 rounded-lg mb-1 transition-colors cursor-pointer",
                           isActive
@@ -132,7 +130,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                       >
                         <Icon className="w-5 h-5" />
                         <span>{item.label}</span>
-                      </motion.div>
+                      </div>
                     </Link>
                   );
                 })}
