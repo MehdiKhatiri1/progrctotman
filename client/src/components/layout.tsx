@@ -18,7 +18,7 @@ const menuItems = [
   {
     category: "Social Media",
     items: [
-      { icon: SiInstagram, label: "Instagram", href: "/store" },
+      { icon: SiInstagram, label: "Instagram", href: "/instagram" },
       { icon: SiTiktok, label: "TikTok", href: "/tiktok" },
       { icon: SiFacebook, label: "Facebook", href: "/facebook" },
       { icon: SiYoutube, label: "YouTube", href: "/youtube" },

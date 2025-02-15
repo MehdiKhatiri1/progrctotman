@@ -13,6 +13,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Landing} />
       <Route path="/store" component={Store} />
+      <Route path="/instagram" component={Store} />
       <Route path="/tiktok" component={Store} />
       <Route path="/facebook" component={Store} />
       <Route path="/youtube" component={Store} />
