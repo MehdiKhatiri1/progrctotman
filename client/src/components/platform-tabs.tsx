@@ -15,7 +15,7 @@ import { Link, useLocation } from "wouter";
 
 const useSearchParams = () => {
   const [location] = useLocation();
-  return new URLSearchParams(useWouterSearchParams());
+  return new URLSearchParams(location.search);
 };
 
 const platforms = {

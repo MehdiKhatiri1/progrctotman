@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Phone } from "lucide-react";
+//import { Phone } from "lucide-react"; // Removed import
 
 function LoadingSkeleton() {
   return (
@@ -61,7 +61,9 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center space-y-4"
           >
-            <h1 className="text-4xl font-bold">Welcome Home</h1>
+            <div className="w-full h-full"> {/* Replacement div */}
+              <h1>Welcome Home</h1>
+            </div>
             <p className="text-xl text-muted-foreground">
               Your one-stop shop for digital services
             </p>
@@ -75,7 +77,7 @@ export default function Home() {
             </Button>
             <Button variant="outline" asChild>
               <Link href="/contact">
-                <PhoneIcon className="w-4 h-4 mr-2" />
+                {/*<PhoneIcon className="w-4 h-4 mr-2" />  Removed PhoneIcon*/}
                 Contact Us
               </Link>
             </Button>
