@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, decimal, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, decimal, timestamp, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -12,20 +12,24 @@ export const users = pgTable("users", {
 
 export const services = pgTable("services", {
   id: serial("id").primaryKey(),
-  platform: text("platform").notNull(),
-  type: text("type").notNull(),
-  quantity: integer("quantity").notNull(),
-  price: decimal("price").notNull(),
-  category: text("category").notNull().default("social"), // 'social' or 'streaming'
-  description: text("description"),
+  platform: text("platform").notNull(), // 'instagram', 'tiktok', 'facebook', 'youtube'
+  serviceType: text("service_type").notNull(), // 'followers', 'likes', 'views'
+  quantity: integer("quantity").notNull(), // e.g., 1000, 3000, 5000, 10000
+  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
+  currency: text("currency").notNull().default('dh'),
+  displayNameAr: text("display_name_ar"), // Arabic display name
+  displayNameEn: text("display_name_en"), // English display name
+  isActive: boolean("is_active").notNull().default(true),
 });
 
 export const orders = pgTable("orders", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").notNull(),
   status: text("status").notNull().default("pending"),
-  total: decimal("total").notNull(),
+  total: decimal("total", { precision: 10, scale: 2 }).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
+  targetUrl: text("target_url"), // URL where the service should be applied
+  notes: text("notes"),
 });
 
 export const orderItems = pgTable("order_items", {
@@ -33,7 +37,8 @@ export const orderItems = pgTable("order_items", {
   orderId: integer("order_id").notNull(),
   serviceId: integer("service_id").notNull(),
   quantity: integer("quantity").notNull(),
-  price: decimal("price").notNull(),
+  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
+  status: text("status").notNull().default("pending"),
 });
 
 // Auth schemas
