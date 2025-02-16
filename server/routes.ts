@@ -11,50 +11,118 @@ export async function registerRoutes(app: Express) {
       const services = await storage.getServices();
       if (!services || services.length === 0) {
         const initialServices: Service[] = [
+          // Instagram Services
           {
             id: 1,
             platform: "instagram",
             type: "followers",
             quantity: 1000,
-            price: "9.99",
+            price: "30",
             category: "social",
-            description: "Get 1000 Instagram followers"
+            description: "1K Instagram Followers"
           },
           {
             id: 2,
-            platform: "tiktok",
-            type: "likes",
-            quantity: 5000,
-            price: "19.99",
+            platform: "instagram",
+            type: "followers",
+            quantity: 3000,
+            price: "90",
             category: "social",
-            description: "Get 5000 TikTok likes"
+            description: "3K Instagram Followers"
           },
           {
             id: 3,
-            platform: "youtube",
-            type: "subscribers",
-            quantity: 1000,
-            price: "24.99",
+            platform: "instagram",
+            type: "followers",
+            quantity: 5000,
+            price: "130",
             category: "social",
-            description: "Get 1000 YouTube subscribers"
+            description: "5K Instagram Followers"
           },
           {
             id: 4,
+            platform: "instagram",
+            type: "likes",
+            quantity: 1000,
+            price: "15",
+            category: "social",
+            description: "1K Instagram Likes"
+          },
+          // TikTok Services
+          {
+            id: 5,
+            platform: "tiktok",
+            type: "followers",
+            quantity: 1000,
+            price: "30",
+            category: "social",
+            description: "1K TikTok Followers"
+          },
+          {
+            id: 6,
+            platform: "tiktok",
+            type: "followers",
+            quantity: 3000,
+            price: "80",
+            category: "social",
+            description: "3K TikTok Followers"
+          },
+          // Facebook Services
+          {
+            id: 7,
+            platform: "facebook",
+            type: "followers",
+            quantity: 1000,
+            price: "30",
+            category: "social",
+            description: "1K Facebook Followers"
+          },
+          {
+            id: 8,
+            platform: "facebook",
+            type: "likes",
+            quantity: 1000,
+            price: "15",
+            category: "social",
+            description: "1K Facebook Likes"
+          },
+          // YouTube Services
+          {
+            id: 9,
+            platform: "youtube",
+            type: "followers",
+            quantity: 1000,
+            price: "120",
+            category: "social",
+            description: "1K YouTube Subscribers"
+          },
+          {
+            id: 10,
+            platform: "youtube",
+            type: "views",
+            quantity: 5000,
+            price: "120",
+            category: "social",
+            description: "5K YouTube Views"
+          },
+          // Streaming Services
+          {
+            id: 11,
             platform: "spotify",
             type: "premium",
             quantity: 1,
             price: "29.99",
             category: "streaming",
-            description: "1 Month Spotify Premium"
+            description: "Spotify Premium Subscription"
           },
           {
-            id: 5,
+            id: 12,
             platform: "netflix",
             type: "premium",
             quantity: 1,
             price: "39.99",
             category: "streaming",
-            description: "1 Month Netflix Premium"
+            description: "Netflix Premium Subscription"
           }
         ];
 
