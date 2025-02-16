@@ -15,124 +15,150 @@ export async function registerRoutes(app: Express) {
           {
             id: 1,
             platform: "instagram",
-            type: "followers",
+            serviceType: "followers",
             quantity: 1000,
-            price: "30",
-            category: "social",
-            description: "1K Instagram Followers"
+            price: "30.00",
+            currency: "dh",
+            displayNameAr: "المتابعين",
+            displayNameEn: "Followers",
+            isActive: true
           },
           {
             id: 2,
             platform: "instagram",
-            type: "followers",
+            serviceType: "followers",
             quantity: 3000,
-            price: "90",
-            category: "social",
-            description: "3K Instagram Followers"
+            price: "90.00",
+            currency: "dh",
+            displayNameAr: "المتابعين",
+            displayNameEn: "Followers",
+            isActive: true
           },
           {
             id: 3,
             platform: "instagram",
-            type: "followers",
+            serviceType: "followers",
             quantity: 5000,
-            price: "130",
-            category: "social",
-            description: "5K Instagram Followers"
+            price: "130.00",
+            currency: "dh",
+            displayNameAr: "المتابعين",
+            displayNameEn: "Followers",
+            isActive: true
           },
           {
             id: 4,
             platform: "instagram",
-            type: "likes",
+            serviceType: "likes",
             quantity: 1000,
-            price: "15",
-            category: "social",
-            description: "1K Instagram Likes"
+            price: "15.00",
+            currency: "dh",
+            displayNameAr: "الإعجابات",
+            displayNameEn: "Likes",
+            isActive: true
           },
           // TikTok Services
           {
             id: 5,
             platform: "tiktok",
-            type: "followers",
+            serviceType: "followers",
             quantity: 1000,
-            price: "30",
-            category: "social",
-            description: "1K TikTok Followers"
+            price: "30.00",
+            currency: "dh",
+            displayNameAr: "المتابعين",
+            displayNameEn: "Followers",
+            isActive: true
           },
           {
             id: 6,
             platform: "tiktok",
-            type: "followers",
+            serviceType: "followers",
             quantity: 3000,
-            price: "80",
-            category: "social",
-            description: "3K TikTok Followers"
+            price: "80.00",
+            currency: "dh",
+            displayNameAr: "المتابعين",
+            displayNameEn: "Followers",
+            isActive: true
           },
           // Facebook Services
           {
             id: 7,
             platform: "facebook",
-            type: "followers",
+            serviceType: "followers",
             quantity: 1000,
-            price: "30",
-            category: "social",
-            description: "1K Facebook Followers"
+            price: "30.00",
+            currency: "dh",
+            displayNameAr: "المتابعين",
+            displayNameEn: "Followers",
+            isActive: true
           },
           {
             id: 8,
             platform: "facebook",
-            type: "likes",
+            serviceType: "likes",
             quantity: 1000,
-            price: "15",
-            category: "social",
-            description: "1K Facebook Likes"
+            price: "15.00",
+            currency: "dh",
+            displayNameAr: "الإعجابات",
+            displayNameEn: "Likes",
+            isActive: true
           },
           // YouTube Services
           {
             id: 9,
             platform: "youtube",
-            type: "followers",
+            serviceType: "followers",
             quantity: 1000,
-            price: "120",
-            category: "social",
-            description: "1K YouTube Subscribers"
+            price: "120.00",
+            currency: "dh",
+            displayNameAr: "الاشتراكات",
+            displayNameEn: "Subscribers",
+            isActive: true
           },
           {
             id: 10,
             platform: "youtube",
-            type: "views",
+            serviceType: "views",
             quantity: 5000,
-            price: "120",
-            category: "social",
-            description: "5K YouTube Views"
+            price: "120.00",
+            currency: "dh",
+            displayNameAr: "المشاهدات",
+            displayNameEn: "Views",
+            isActive: true
           },
           // Streaming Services
           {
             id: 11,
             platform: "spotify",
-            type: "premium",
+            serviceType: "premium",
             quantity: 1,
             price: "29.99",
-            category: "streaming",
-            description: "Spotify Premium Subscription"
+            currency: "dh",
+            displayNameAr: "اشتراك بريميوم",
+            displayNameEn: "Premium Subscription",
+            isActive: true
           },
           {
             id: 12,
             platform: "netflix",
-            type: "premium",
+            serviceType: "premium",
             quantity: 1,
             price: "39.99",
-            category: "streaming",
-            description: "Netflix Premium Subscription"
+            currency: "dh",
+            displayNameAr: "اشتراك بريميوم",
+            displayNameEn: "Premium Subscription",
+            isActive: true
           },
           // Add Canva service
           {
             id: 13,
             platform: "canva",
-            type: "premium",
+            serviceType: "premium",
             quantity: 1,
             price: "25.99",
-            category: "design",
-            description: "Canva Pro Subscription"
+            currency: "dh",
+            displayNameAr: "اشتراك برو",
+            displayNameEn: "Pro Subscription",
+            isActive: true
           }
         ];
 
@@ -149,12 +175,13 @@ export async function registerRoutes(app: Express) {
     }
   };
 
-  // Services endpoint
+  // Services endpoint with error handling and caching
   app.get("/api/services", async (_req, res) => {
     try {
-      console.log("Fetching services...");
-      const services = await initializeServices();
-      console.log(`Found ${services.length} services`);
+      const services = await storage.getServices();
+
+      // Set cache headers
+      res.set('Cache-Control', 'public, max-age=300'); // Cache for 5 minutes
       res.json(services);
     } catch (error) {
       console.error("Error fetching services:", error);
@@ -165,13 +192,16 @@ export async function registerRoutes(app: Express) {
     }
   });
 
-  // Get service by ID
+  // Get service by ID with error handling
   app.get("/api/services/:id", async (req, res) => {
     try {
       const service = await storage.getServiceById(parseInt(req.params.id));
       if (!service) {
         return res.status(404).json({ message: "Service not found" });
       }
+
+      // Set cache headers
+      res.set('Cache-Control', 'public, max-age=300');
       res.json(service);
     } catch (error) {
       console.error("Error fetching service:", error);
@@ -179,7 +209,7 @@ export async function registerRoutes(app: Express) {
     }
   });
 
-  // Orders endpoint
+  // Orders endpoint with validation
   app.post("/api/orders", async (req, res) => {
     try {
       const orderData = insertOrderSchema.parse(req.body);
@@ -198,7 +228,7 @@ export async function registerRoutes(app: Express) {
     }
   });
 
-  // Get user orders
+  // Get user orders with authentication check
   app.get("/api/orders", async (req, res) => {
     if (!req.isAuthenticated()) {
       return res.status(401).json({ message: "Not authenticated" });
