@@ -28,7 +28,7 @@ function LoadingSkeleton() {
 
 export default function Store() {
   const [location] = useLocation();
-  const platform = location.split('/store/')[1] || 'all';
+  const platform = new URLSearchParams(window.location.search).get('platform') || location.split('/')[1] || 'instagram';
 
   const { data: services, isLoading, error } = useQuery<Service[]>({
     queryKey: ["/api/services"],
@@ -51,7 +51,7 @@ export default function Store() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="container mx-auto px-4 py-8 space-y-12"
+        className="space-y-12"
       >
         <motion.div 
           initial={{ opacity: 0, y: 20 }}

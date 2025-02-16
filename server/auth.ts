@@ -51,7 +51,7 @@ export function setupAuth(app: Express) {
   app.use(passport.session());
 
   passport.use(
-    new LocalStrategy(async (username: string, password: string, done) => {
+    new LocalStrategy(async (username, password, done) => {
       try {
         const user = await storage.getUserByUsername(username);
         if (!user || !(await comparePasswords(password, user.password))) {
@@ -68,9 +68,6 @@ export function setupAuth(app: Express) {
   passport.deserializeUser(async (id: number, done) => {
     try {
       const user = await storage.getUser(id);
-      if (!user) {
-        return done(new Error("User not found"), null);
-      }
       done(null, user);
     } catch (err) {
       done(err);
@@ -99,10 +96,10 @@ export function setupAuth(app: Express) {
   });
 
   app.post("/api/login", (req, res, next) => {
-    passport.authenticate("local", (err: Error | null, user: SelectUser | false, info: { message: string } | undefined) => {
+    passport.authenticate("local", (err, user, info) => {
       if (err) return next(err);
       if (!user) {
-        return res.status(401).json({ message: info?.message || "Authentication failed" });
+        return res.status(401).json({ message: info.message });
       }
       req.login(user, (err) => {
         if (err) return next(err);

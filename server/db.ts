@@ -13,14 +13,3 @@ if (!process.env.DATABASE_URL) {
 
 export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 export const db = drizzle({ client: pool, schema });
-
-// Add ping function to test database connectivity
-export async function pingDatabase() {
-  try {
-    const result = await pool.query('SELECT 1');
-    return result.rowCount === 1;
-  } catch (error) {
-    console.error('Database ping failed:', error);
-    return false;
-  }
-}
