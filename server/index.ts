@@ -1,11 +1,24 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { setupAuth } from "./auth";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Enable CORS for development
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
+// Request logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
@@ -36,15 +49,22 @@ app.use((req, res, next) => {
   next();
 });
 
+if (!process.env.SESSION_SECRET) {
+  throw new Error("SESSION_SECRET environment variable must be set");
+}
+
 (async () => {
+  // Setup authentication first
+  setupAuth(app);
+
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+    console.error("Error:", err);
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
 
     res.status(status).json({ message });
-    throw err;
   });
 
   if (app.get("env") === "development") {
@@ -53,9 +73,8 @@ app.use((req, res, next) => {
     serveStatic(app);
   }
 
-  // Use port 5000 as specified in .replit file
   const PORT = 5000;
   server.listen(PORT, "0.0.0.0", () => {
     log(`Server running at http://0.0.0.0:${PORT}`);
   });
-})();
+})().catch(console.error);

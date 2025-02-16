@@ -123,6 +123,16 @@ export async function registerRoutes(app: Express) {
             price: "39.99",
             category: "streaming",
             description: "Netflix Premium Subscription"
+          },
+          // Add Canva service
+          {
+            id: 13,
+            platform: "canva",
+            type: "premium",
+            quantity: 1,
+            price: "25.99",
+            category: "design",
+            description: "Canva Pro Subscription"
           }
         ];
 
@@ -148,9 +158,9 @@ export async function registerRoutes(app: Express) {
       res.json(services);
     } catch (error) {
       console.error("Error fetching services:", error);
-      res.status(500).json({ 
+      res.status(500).json({
         message: "Failed to fetch services",
-        error: process.env.NODE_ENV === 'development' ? String(error) : undefined
+        error: process.env.NODE_ENV === "development" ? String(error) : undefined
       });
     }
   });
@@ -177,7 +187,7 @@ export async function registerRoutes(app: Express) {
       res.status(201).json(order);
     } catch (error) {
       if (error instanceof z.ZodError) {
-        res.status(400).json({ 
+        res.status(400).json({
           message: "Invalid order data",
           errors: error.errors
         });
