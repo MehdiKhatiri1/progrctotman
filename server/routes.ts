@@ -142,13 +142,15 @@ export async function registerRoutes(app: Express) {
   // Services endpoint
   app.get("/api/services", async (_req, res) => {
     try {
+      console.log("Fetching services...");
       const services = await initializeServices();
+      console.log(`Found ${services.length} services`);
       res.json(services);
     } catch (error) {
       console.error("Error fetching services:", error);
       res.status(500).json({ 
         message: "Failed to fetch services",
-        error: process.env.NODE_ENV === 'development' ? error : undefined
+        error: process.env.NODE_ENV === 'development' ? String(error) : undefined
       });
     }
   });

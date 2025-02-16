@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 
 import Landing from "@/pages/landing";
 import Store from "@/pages/store";
+import Services from "@/pages/services";
 import Contact from "@/pages/contact";
 import Auth from "@/pages/auth";
 import NotFound from "@/pages/not-found";
@@ -25,6 +26,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Landing} />
       <Route path="/store" component={Store} />
+      <Route path="/services" component={Services} />
       <Route path="/contact" component={Contact} />
       <Route path="/auth" component={Auth} />
 
